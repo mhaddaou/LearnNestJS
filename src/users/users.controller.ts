@@ -4,51 +4,43 @@ import {v4 as uid} from 'uuid'
 import { CreateUsersDto } from "./dtos/create-users.dto";
 import {UpdateUsersDto} from './dtos/update-users.dto'
 import { CustomeValidationPipe } from "./pipes/validation.pipe";
+import {UsersService} from './users.service'
 @Controller('users')
 export class UserController{
-    private users : UsersEntity[] = [];
+    constructor(
+        private readonly userService : UsersService
+    ){}
+
     
     //find all users
     @Get()
     findAll(){
-        return this.users;
+        return this.userService.findUsers();
     }
 
-    //find user with query
-    @Get()
-    @UsePipes(CustomeValidationPipe)
-    find(@Query('username') username : string) : UsersEntity[]{
-        return this.users;
-    }
+    
 
     //find one user by id
     @Get(':id')
     findOne(@Param('id', ParseUUIDPipe) id : string) : UsersEntity{
-        return this.users.find((user : UsersEntity) => user.id === id);
+        return this.userService.findUserById(id);
     }
 
     //create user
     @Post()
     create(@Body() userData : CreateUsersDto) : UsersEntity{
-        const newUser = {
-            ...userData,
-            id : uid(),
-        }
-        this.users.push(newUser);
-        return newUser;
+        return this.userService.createUser(userData);
     }
 
     //update user
     @Patch(':id')
     update(@Param('id') id : string, @Body() userData : UpdateUsersDto) : UsersEntity{
-        const index = this.users.findIndex((user : UsersEntity) => user.id === id);
-        this.users[index] = {...this.users[index], ...userData};
-        return this.users[index];
+        return this.userService.updateUser(id, userData);
     }
 
     //delete user
     @Delete(':id')
     delete(@Param('id') id : string){
-        this.users = this.users.filter((user : UsersEntity) => user.id !== id);
+        return this.userService.deleteUser(id);
     }
 }
