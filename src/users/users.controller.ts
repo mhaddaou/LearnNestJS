@@ -1,10 +1,9 @@
-import { Body, Controller, Get, Param, Post, Patch, Delete } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Patch, Delete, ParseUUIDPipe, ValidationPipe, UsePipes } from "@nestjs/common";
 import { UsersEntity } from "./dtos/users.Entity";
 import {v4 as uid} from 'uuid'
 import { CreateUsersDto } from "./dtos/create-users.dto";
 import {UpdateUsersDto} from './dtos/update-users.dto'
 @Controller('users')
-
 export class UserController{
     private users : UsersEntity[] = [];
 
@@ -16,7 +15,7 @@ export class UserController{
 
     //find one user by id
     @Get(':id')
-    findOne(@Param('id') id : string) : UsersEntity{
+    findOne(@Param('id', ParseUUIDPipe) id : string) : UsersEntity{
         return this.users.find((user : UsersEntity) => user.id === id);
     }
 
