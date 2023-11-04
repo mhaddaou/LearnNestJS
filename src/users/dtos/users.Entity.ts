@@ -1,4 +1,5 @@
-export class CreateUserDto{
+export class UsersEntity{
+    id : string;
     firstname : string;
     lastname : string;
     email : string;
