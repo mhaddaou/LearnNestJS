@@ -1,15 +1,23 @@
-import { Body, Controller, Get, Param, Post, Patch, Delete, ParseUUIDPipe, ValidationPipe, UsePipes } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Patch, Delete, ParseUUIDPipe, ValidationPipe, UsePipes, Query } from "@nestjs/common";
 import { UsersEntity } from "./dtos/users.Entity";
 import {v4 as uid} from 'uuid'
 import { CreateUsersDto } from "./dtos/create-users.dto";
 import {UpdateUsersDto} from './dtos/update-users.dto'
+import { CustomeValidationPipe } from "./pipes/validation.pipe";
 @Controller('users')
 export class UserController{
     private users : UsersEntity[] = [];
-
+    
     //find all users
     @Get()
-    find() : UsersEntity[]{
+    findAll(){
+        return this.users;
+    }
+
+    //find user with query
+    @Get()
+    @UsePipes(CustomeValidationPipe)
+    find(@Query('username') username : string) : UsersEntity[]{
         return this.users;
     }
 

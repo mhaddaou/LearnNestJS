@@ -1,9 +1,11 @@
 import { IsEmail, IsString, Length } from "class-validator";
+import { CustomeValidationPipe } from "../pipes/validation.pipe";
+
 
 export class CreateUsersDto{
 
-    @Length(3,20)
     @IsString()
+    @Length(3,20)
     readonly firstname : string;
     
     @IsString()
@@ -11,7 +13,7 @@ export class CreateUsersDto{
     readonly lastname : string;
     
     @IsString()
-    @IsEmail()
+    @IsEmail({}, {message: "incorrect email address"})
     readonly email : string;
     
     @IsString()
