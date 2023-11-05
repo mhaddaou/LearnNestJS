@@ -8,7 +8,7 @@ import {UsersService} from './users.service'
 @Controller('users')
 export class UserController{
     constructor(
-        private readonly userService : UsersService
+        private readonly userService : UsersService,
     ){}
 
     
@@ -34,7 +34,7 @@ export class UserController{
 
     //update user
     @Patch(':id')
-    update(@Param('id') id : string, @Body() userData : UpdateUsersDto) : UsersEntity{
+    update(@Param('id', ParseUUIDPipe) id : string, @Body() userData : UpdateUsersDto) : UsersEntity{
         return this.userService.updateUser(id, userData);
     }
 

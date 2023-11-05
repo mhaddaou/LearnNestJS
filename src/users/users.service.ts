@@ -25,7 +25,7 @@ export class UsersService{
         return newUser;
     }
 
-    updateUser(@Param('id') id : string, @Body() userData : UpdateUsersDto) : UsersEntity{
+    updateUser(@Param('id', ParseUUIDPipe) id : string, @Body() userData : UpdateUsersDto) : UsersEntity{
         const index = this.users.findIndex((user : UsersEntity) => user.id === id);
         this.users[index] = {...this.users[index], ...userData};
         return this.users[index];
